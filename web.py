@@ -201,6 +201,7 @@ def show_item_page(sku):
                     altDict['price'] = inf['salePrice']
                     cart_url = inf['addToCartUrl']
                     altDict['addToCartUrl'] = cart_url
+                    altDict['sku'] = inf['sku']
 
                     alternatives[row.Index] = altDict
 

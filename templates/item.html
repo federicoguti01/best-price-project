@@ -57,7 +57,14 @@
 					<div class="alt-tile-footer">
 						<div class="alt-title">{{ alt['name'] }}</div>
                         <div class="alt-price">${{ alt['price'] }}</div>
-                        <div class="alt-cart"><a href="{{ alt['addToCartUrl'] }}">Add To Cart</a></div>
+                        <div class="row">
+                            <div class="column">
+                                <div class="alt-view"><a href="/item/{{ alt['sku'] }}">View</a></div>
+                            </div>
+                            <div class="column">
+                                <div class="alt-cart"><a href="{{ alt['addToCartUrl'] }}">Add To Cart</a></div>
+                            </div>
+                        </div>
 					</div>
 				</form>
 			</div>
