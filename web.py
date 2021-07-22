@@ -188,7 +188,7 @@ def show_item_page(sku):
             itemDict['price'] = json['regularPrice']
             itemDict['salePrice'] = json['salePrice']
             itemDict['rating'] = json['customerReviewAverage']
-            itemDict['description'] = str(json['longDescription']).encode('utf-8')
+            itemDict['description'] = json['longDescription']
 
             alts = find_alts(sku, json['salePrice'])
             if not alts.empty:
