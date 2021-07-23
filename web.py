@@ -122,6 +122,7 @@ def logout():
 
 
 @app.route('/search', methods=['GET', 'POST'])
+@login_required
 def search():
     search = ProductSearchForm()
     if request.method == 'POST':
@@ -137,7 +138,7 @@ def search():
 @app.route('/results')
 def search_results(search):
     results = parse_data(search.data['search'])
-
+    
     return render_template(
         'results.html',
         tables=[
@@ -181,7 +182,6 @@ def show_item_page(sku):
         itemDict = {}
         alternatives = {}
         if json:
-            print(json)
             itemDict['name'] = json['name']
             itemDict['pic'] = json['image']
             itemDict['startDate'] = json['startDate']
@@ -189,6 +189,7 @@ def show_item_page(sku):
             itemDict['salePrice'] = json['salePrice']
             itemDict['rating'] = json['customerReviewAverage']
             itemDict['description'] = json['longDescription']
+            itemDict['addToCart'] = json['addToCartUrl']
 
             alts = find_alts(sku, json['salePrice'])
             if not alts.empty:
