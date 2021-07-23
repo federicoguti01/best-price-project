@@ -1,23 +1,136 @@
 {% extends "layout.html" %}
 {% block content %}
+
+<style>
+body {
+  background-image: url('/static/bestprice_bg.png');
+  background-size: 100%
+}
+</style> 
+
     <h2>{{ subtitle }}</h2>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
+    var items = {{ trending|safe }}
+    var numItems = items['size']
+    var x = 0;
+    var y = 1;
+    var z = 2;
     setInterval(function() {
-       $("p").toggleClass("red")
-    }, 2000)
+//        $("p").toggleClass('red');
+       if (x < numItems) {
+           var item1  = items[x]
+           var sku = item1['sku']
+           sku = sku.toString()
+           var pic = item1['pic']
+           pic = pic.toString()
+           var itemName = item1['name']
+           itemName = itemName.toString()
+           $(".trn-link1").attr("href", "/item/" + sku)
+           $(".trn-img1").attr("src",pic);
+           $('.trn-name1').text(itemName);
+           x = z+1;
+       }
+       else {
+           x = 0
+           y = 1
+           z = 2
+       }
+        
+       if (y < numItems) {
+           var item1  = items[y]
+           var sku = item1['sku']
+           sku = sku.toString()
+           var pic = item1['pic']
+           pic = pic.toString()
+           var itemName = item1['name']
+           itemName = itemName.toString()
+           $(".trn-link2").attr("href", "/item/" + sku)
+           $(".trn-img2").attr("src",pic);
+           $('.trn-name2').text(itemName);
+           y = x+1;
+       }
+       else {
+           x = 0
+           y = 1
+           z = 2
+       }
+       
+       if (z < numItems) {
+           var item1  = items[z]
+           var sku = item1['sku']
+           sku = sku.toString()
+           var pic = item1['pic']
+           pic = pic.toString()
+           var itemName = item1['name']
+           itemName = itemName.toString()
+           $(".trn-link3").attr("href", "/item/" + sku)
+           $(".trn-img3").attr("src",pic);
+           $('.trn-name3').text(itemName);
+           z = y + 1;
+       }
+       else {
+           x = 0
+           y = 1
+           z = 2
+       }
+    }, 4500)
     </script>
+    
+   <h4><b>Trending Items</b></h4>
+
+
+
+    <div class="center">
+
+    <div class="wrapper2">
+
+        <div class="trending-item column-trn" id="trn-1">
+                    <form method="post" action="/add">
+                        <div class="trending-image"><a class="trn-link1" href="/"><img class="trn-img1" src="https://via.placeholder.com/150" style=max-width:325px;max-height:325px;></a></div>
+                        <div class="trending-tile-footer">
+                            <div class="trending-title trn-name1">Getting Products...</div>
+                        </div>
+                    </form>
+        </div>
+
+        <div class="trending-item column-trn" id="trn-2">
+                    <form method="post" action="/add">
+                        <div class="trending-image"><a class="trn-link2" href="/"><img class="trn-img2" src="https://via.placeholder.com/150" style=max-width:325px;max-height:325px;></a></div>
+                        <div class="trending-tile-footer">
+                            <div class="trending-title trn-name2">Getting Products...</div>
+                        </div>
+                    </form>
+        </div>
+
+        <div class="trending-item column-trn" id="trn-3">
+                    <form method="post" action="/add">
+                        <div class="trending-image"><a class="trn-link3" href="/"><img class="trn-img3" src="https://via.placeholder.com/150" style=max-width:325px;max-height:325px;></a></div>
+                        <div class="trending-tile-footer">
+                            <div class="trending-title trn-name3">Getting Products...</div>
+                        </div>
+                    </form>
+        </div>
+        
+    </div>
+        
+    </div>
+
+
+    <a href="/search" class="button">Search for More Products</a>
+
+
+
   <!--   footer -->
      {% block footer %}
    <div class="container">
       <div id="footer">
         
-           <center><h2>Best price</h2>
-           <p> Best price webpage is where a user can search for 
+           <p> BestPrice is where you can search for 
              a product and get related products <br/> that are either less expensive 
-             or more suited to their needs, <br/>
-             placing the power of choice back in the user’s hands.&copy 2021</p>
+             or more suited to your needs, <br/>
+               placing the power of choice back in <i>your</i>  hands. &copy 2021</p>
            </center>
      </div>
   </div>

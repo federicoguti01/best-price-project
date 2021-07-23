@@ -9,7 +9,7 @@ from flask_behind_proxy import FlaskBehindProxy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required
 from flask_login import logout_user, current_user
-from queryproduct import parse_data, find_alts, get_product_info
+from queryproduct import parse_data, find_alts, get_product_info, get_trending_items
 import pandas as pd
 
 # this gets the name of the file so Flask knows it's name
@@ -102,16 +102,36 @@ def about():
     return render_template('about.html', subtitle='About Page')
 
 
+# Old home
+# @app.route("/home")
+# @login_required
+# def home():
+#     return render_template('home.html', subtitle='Home Page')
+
 @app.route("/")
-@login_required
 def init():
-    return render_template('home.html', subtitle='Home Page')
-
-
-@app.route("/home")
-@login_required
-def home():
-    return render_template('home.html', subtitle='Home Page')
+    try:
+        json = get_trending_items()
+        itemItemDict = {}
+        if 'results' in json:
+            results = json['results']
+            i = 0
+            for item in results:
+                itemDict = {}
+                itemDict['name'] = item['names']['title']
+                itemDict['pic'] = item['images']['standard']
+                print(itemDict['pic'])
+                itemDict['sku'] = item['sku'] 
+                itemItemDict[i] = itemDict
+                i = i + 1
+        
+        itemItemDict['size'] = len(itemItemDict)
+        print(itemItemDict['size'])
+        return render_template('home.html',trending=itemItemDict)
+    except Exception as e:
+        print(e)
+    finally:
+        print('yo')
 
 
 @app.route("/logout")

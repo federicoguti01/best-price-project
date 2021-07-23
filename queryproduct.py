@@ -68,6 +68,16 @@ def get_product_info(sku):
     
     return None
 
+def get_trending_items():
+    PRODUCT_URL = f'products/trendingViewed?'
+    decoder = requests.get(DECODE_URL + PRODUCT_URL + AUTH_URL)
+    if decoder.status_code == 200:
+        decoder = decoder.json()
+        df = pd.json_normalize(decoder)
+        return decoder
+    
+    return None
+
 
 def find_alts(sku, product_price):
     PRODUCT_URL = f'products/{sku}/alsoViewed?'
