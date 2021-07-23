@@ -22,9 +22,9 @@ def parse_data(product):
     RESULT_URL += 'sku&pageSize=10&active=true&'
 
     decoder = requests.get(DECODE_URL + RESULT_URL + AUTH_URL)
-    
+
     if(decoder.status_code == 200):
-    
+
         decoder = decoder.json()
 
         df = pd.json_normalize(decoder['products'])
@@ -54,7 +54,7 @@ def parse_data(product):
         print('Search results:')
         print(df)
         return df
-    
+
     return None
 
 
@@ -65,8 +65,9 @@ def get_product_info(sku):
         decoder = decoder.json()
         df = pd.json_normalize(decoder)
         return decoder
-    
+
     return None
+
 
 def get_trending_items():
     PRODUCT_URL = f'products/trendingViewed?'
@@ -75,17 +76,16 @@ def get_trending_items():
         decoder = decoder.json()
         df = pd.json_normalize(decoder)
         return decoder
-    
+
     return None
 
 
 def find_alts(sku, product_price):
     PRODUCT_URL = f'products/{sku}/alsoViewed?'
     decoder = requests.get(DECODE_URL + PRODUCT_URL + AUTH_URL)
-    
+
     if decoder.status_code == 200:
         decoder = decoder.json()
-
 
         FIELDS = ['sku', 'prices.current', 'links.addToCart']
 
@@ -100,7 +100,7 @@ def find_alts(sku, product_price):
         print('Cheaper alternatives:')
         print(df)
         return df
-    
+
     return None
 
 

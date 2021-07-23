@@ -39,19 +39,3 @@ class ProductSearchForm(FlaskForm):
     #     select = SelectField('Search for music:', choices=choices)
     search = StringField('')
     submit = SubmitField('Search')
-
-
-class AltSelectForm(FlaskForm):
-    choices = [(0, '0'),
-               (1, '1'),
-               (2, '2'),
-               (3, '3'),
-               (4, '4'),
-               (5, '5'),
-               (6, '6'),
-               (7, '7'),
-               (8, '8'),
-               (9, '9')]
-
-    select = SelectField('Select a product:', choices=choices)
-    submit = SubmitField('Search for cheaper options!')

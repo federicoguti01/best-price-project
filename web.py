@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, flash, redirect, request
-from forms import RegistrationForm, LoginForm, ProductSearchForm, AltSelectForm
+from forms import RegistrationForm, LoginForm, ProductSearchForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 from flask_sqlalchemy import SQLAlchemy
@@ -9,7 +9,8 @@ from flask_behind_proxy import FlaskBehindProxy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required
 from flask_login import logout_user, current_user
-from queryproduct import parse_data, find_alts, get_product_info, get_trending_items
+from queryproduct import parse_data, find_alts, get_product_info
+from queryproduct import get_trending_items
 import pandas as pd
 
 # this gets the name of the file so Flask knows it's name
@@ -71,7 +72,7 @@ def register():
         else:
             flash(f'Account created for {form.username.data}!', 'success')
         finally:
-            return redirect(url_for('home'))  # if so - send to home page
+            return redirect(url_for('init'))  # if so - send to home page
     return render_template('register.html', title='Register', form=form)
 
 
@@ -86,13 +87,13 @@ def login():
                     my_user.password, form.password.data):
                 flash(f'Succesfully logged in', 'success')
                 login_user(my_user, remember=form.remember.data)
-                return redirect(url_for('home'))
+                return redirect(url_for('init'))
             else:
                 flash('Incorrect password', 'error')
-                return redirect(url_for('home'))
+                return redirect(url_for('init'))
         else:
             flash('User does not exist', 'error')
-            return redirect(url_for('home'))
+            return redirect(url_for('init'))
     return render_template('login.html', title='Login', form=form)
 
 
@@ -109,6 +110,7 @@ def about():
 #     return render_template('home.html', subtitle='Home Page')
 
 @app.route("/")
+@app.route("/home")
 def init():
     try:
         json = get_trending_items()
@@ -121,13 +123,13 @@ def init():
                 itemDict['name'] = item['names']['title']
                 itemDict['pic'] = item['images']['standard']
                 print(itemDict['pic'])
-                itemDict['sku'] = item['sku'] 
+                itemDict['sku'] = item['sku']
                 itemItemDict[i] = itemDict
                 i = i + 1
-        
+
         itemItemDict['size'] = len(itemItemDict)
         print(itemItemDict['size'])
-        return render_template('home.html',trending=itemItemDict)
+        return render_template('home.html', trending=itemItemDict)
     except Exception as e:
         print(e)
     finally:
@@ -158,7 +160,7 @@ def search():
 @app.route('/results')
 def search_results(search):
     results = parse_data(search.data['search'])
-    
+
     return render_template(
         'results.html',
         tables=[
